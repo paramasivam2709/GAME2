@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - stacklyGame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #501755 0%, #2d1854 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-container {
+            background: rgba(24, 18, 46, 0.98);
+            padding: 40px 30px 30px 30px;
+            border-radius: 16px;
+            box-shadow: 0 0 30px #b01ba5;
+            width: 350px;
+            animation: fadeInUp 1s;
+        }
+        .auth-container h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-style: italic;
+        }
+        .auth-container input {
+            width: 100%;
+            padding: 14px 12px;
+            margin-bottom: 18px;
+            border: none;
+            border-radius: 6px;
+            background: #3e0f3d;
+            color: #fff;
+            font-size: 16px;
+            transition: box-shadow 0.2s;
+        }
+        .auth-container input:focus {
+            box-shadow: 0 0 0 2px #b01ba5;
+        }
+        .auth-container .site-btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .auth-container .switch-link {
+            color: #b01ba5;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+            font-size: 15px;
+        }
+        .auth-container .error {
+            color: #ff4d6d;
+            background: #fff0f3;
+            border-radius: 4px;
+            padding: 7px 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: center;
+            animation: shake 0.3s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @keyframes shake {
+            0% { transform: translateX(0);}
+            25% { transform: translateX(-5px);}
+            50% { transform: translateX(5px);}
+            75% { transform: translateX(-5px);}
+            100% { transform: translateX(0);}
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Register</h2>
+        <form id="registerForm" autocomplete="off">
+            <div id="registerError" class="error" style="display:none;"></div>
+            <input type="text" id="regUsername" placeholder="Username" required>
+            <input type="email" id="regEmail" placeholder="Email" required>
+            <input type="password" id="regPassword" placeholder="Password" required>
+            <input type="password" id="regConfirm" placeholder="Confirm Password" required>
+            <button type="submit" class="site-btn">Register</button>
+        </form>
+        <a href="login.html" class="switch-link">Already have an account? Login</a>
+    </div>
+    <script src="js/auth.js"></script>
+</body>
+</html>

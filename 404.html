@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404 Not Found - stacklyGame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #501755 0%, #2d1854 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+        .notfound-container {
+            text-align: center;
+            color: #fff;
+            animation: fadeIn 1.2s;
+        }
+        .notfound-404 {
+            font-size: 160px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            color: #fff;
+            text-shadow: 0 0 40px #b01ba5, 0 0 10px #fff;
+            animation: bounce404 1.5s infinite alternate;
+        }
+        .notfound-text {
+            font-size: 32px;
+            margin-bottom: 30px;
+            font-style: italic;
+            color: #b01ba5;
+            animation: fadeInUp 1.2s;
+        }
+        .site-btn {
+            min-width: 160px;
+            padding: 18px 30px;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        @keyframes bounce404 {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(-30px);}
+        }
+        @keyframes fadeIn {
+            from { opacity: 0;}
+            to { opacity: 1;}
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+    <div class="notfound-container">
+        <div class="notfound-404">404</div>
+        <div class="notfound-text">Oops! Page Not Found</div>
+        <p>The page you are looking for might have been removed,<br> had its name changed, or is temporarily unavailable.</p>
+        <a href="index.html" class="site-btn">Back to Home</a>
+    </div>
+</body>
+</html>
