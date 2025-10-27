@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard - stacklyGame</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+        /* dashboard specific */
+        .dashboard-wrap { padding: 120px 30px 60px; min-height: 100vh; background: linear-gradient(45deg,#501755 0%,#2d1854 100%); color:#fff; }
+        .dash-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:30px; }
+        .dash-cards { display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:18px; margin-bottom:30px; }
+        .dash-card { background: rgba(24,18,46,0.95); padding:22px; border-radius:10px; box-shadow:0 6px 30px rgba(176,27,165,0.12); transform: translateY(20px); opacity:0; animation: fadeInUp .6s forwards; }
+        .dash-card:nth-child(1){ animation-delay:.08s } .dash-card:nth-child(2){ animation-delay:.16s }
+        .dash-card:nth-child(3){ animation-delay:.24s } .dash-card:nth-child(4){ animation-delay:.32s }
+        .dash-card h4 { font-size:14px; color:#bfa0c8; font-weight:700; text-transform:uppercase; margin-bottom:8px; }
+        .dash-card .num { font-size:28px; font-weight:900; color:#fff; }
+        .grid { display:grid; grid-template-columns: 260px 1fr; gap:20px; align-items:start; }
+        .sidebar { background: rgba(8,22,36,0.85); padding:18px; border-radius:10px; height:fit-content; }
+        .sidebar a { display:block; color:#fff; padding:10px 8px; border-radius:6px; margin-bottom:6px; font-weight:600; }
+        .sidebar a.active, .sidebar a:hover { background:#34164b; color:#fff; }
+        .panel { background: rgba(24,18,46,0.95); padding:18px; border-radius:10px; box-shadow:0 6px 30px rgba(0,0,0,0.2); color:#fff; }
+        .recent-list { list-style:none; padding:0; margin:0; }
+        .recent-list li { padding:12px 10px; border-bottom:1px dashed rgba(255,255,255,0.04); }
+        .btn-logout { background:#b01ba5; border:none; color:#fff; padding:10px 14px; font-weight:700; cursor:pointer; }
+        @keyframes fadeInUp { from { transform:translateY(20px); opacity:0 } to { transform:translateY(0); opacity:1 } }
+        @media (max-width:767px){ .grid{grid-template-columns:1fr; } .dash-head{flex-direction:column; align-items:flex-start} }
+    </style>
+</head>
+<body>
+    <header class="header-section">
+        <div class="header-warp">
+            <div class="header-bar-warp d-flex" style="justify-content:space-between; align-items:center;">
+                <a href="index.html" class="site-logo"><img src="img/logo.png" alt="logo" style="height:40px;"></a>
+                <div class="user-panel" id="userPanel">
+                    <span id="userName">Guest</span> &nbsp; <button id="logoutBtn" class="btn-logout" style="display:none;">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="dashboard-wrap">
+        <div class="container">
+            <div class="dash-head">
+                <div>
+                    <h2 style="color:#fff; font-style:italic; margin:0 0 6px;">Dashboard</h2>
+                    <p style="margin:0; color:#bfa0c8;">Overview & quick stats</p>
+                </div>
+                <div>
+                    <a href="index.html" class="site-btn" style="min-width:140px; padding:12px 20px;">Visit site <img src="img/icons/double-arrow.png" alt="#"/></a>
+                </div>
+            </div>
+
+            <div class="dash-cards">
+                <div class="dash-card panel">
+                    <h4>Users</h4>
+                    <div class="num" id="usersCount">0</div>
+                    <div style="color:#bfa0c8; margin-top:8px; font-size:13px;">Registered users</div>
+                </div>
+                <div class="dash-card panel">
+                    <h4>Subscribers</h4>
+                    <div class="num" id="subsCount">0</div>
+                    <div style="color:#bfa0c8; margin-top:8px; font-size:13px;">Newsletter signups</div>
+                </div>
+                <div class="dash-card panel">
+                    <h4>Messages</h4>
+                    <div class="num" id="msgCount">0</div>
+                    <div style="color:#bfa0c8; margin-top:8px; font-size:13px;">Contact messages</div>
+                </div>
+                <div class="dash-card panel">
+                    <h4>Site visits</h4>
+                    <div class="num" id="visitsCount">0</div>
+                    <div style="color:#bfa0c8; margin-top:8px; font-size:13px;">Estimated</div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <aside class="sidebar">
+                    <a href="dashboard.html" class="active">Overview</a>
+                    <a href="review.html">Reviews</a>
+                    <a href="blog.html">News</a>
+                    <a href="contact.html">Contact</a>
+                    <a href="login.html" id="loginLink">Login / Register</a>
+                </aside>
+
+                <main>
+                    <div class="panel" style="margin-bottom:18px;">
+                        <h3 style="margin:0 0 12px;">Recent activity</h3>
+                        <ul class="recent-list" id="recentList">
+                            <li style="color:#bfa0c8;">No recent activity</li>
+                        </ul>
+                    </div>
+
+                    <div class="panel">
+                        <h3 style="margin:0 0 12px;">Quick actions</h3>
+                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <button id="clearData" class="site-btn" style="min-width:140px; padding:10px 14px;">Clear demo data</button>
+                            <button id="simulateMsg" class="site-btn" style="min-width:140px; padding:10px 14px;">Simulate message</button>
+                            <button id="simulateSub" class="site-btn" style="min-width:140px; padding:10px 14px;">Simulate subscribe</button>
+                        </div>
+                        <p style="margin-top:10px; color:#bfa0c8;">Actions affect demo/localStorage data only.</p>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Simple dashboard using localStorage demo data
+        (function(){
+            // auth check: redirect if not logged in
+            var logged = localStorage.getItem('loggedIn') === '1';
+            var user = {};
+            try { user = JSON.parse(localStorage.getItem('user') || '{}'); } catch(e){}
+
+            var userNameEl = document.getElementById('userName');
+            var logoutBtn = document.getElementById('logoutBtn');
+            var loginLink = document.getElementById('loginLink');
+
+            if(logged && user.username){
+                userNameEl.textContent = user.username;
+                logoutBtn.style.display = 'inline-block';
+                if(loginLink) loginLink.style.display = 'none';
+            } else {
+                // not logged in -> redirect to login page
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Demo counters and activity
+            var usersCount = document.getElementById('usersCount');
+            var subsCount = document.getElementById('subsCount');
+            var msgCount = document.getElementById('msgCount');
+            var visitsCount = document.getElementById('visitsCount');
+            var recentList = document.getElementById('recentList');
+
+            function getDemoNumbers(){
+                var subscribers = localStorage.getItem('subscribedEmail') ? 1 : 0;
+                // also count a potentially stored array of messages
+                var messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                var users = JSON.parse(localStorage.getItem('userList') || '[]');
+                return {
+                    subs: subscribers + (Array.isArray(JSON.parse(localStorage.getItem('subscribers') || '[]'))? JSON.parse(localStorage.getItem('subscribers') || '[]').length : 0),
+                    msgs: messages.length,
+                    users: (users.length || (localStorage.getItem('user') ? 1 : 0)),
+                    visits: Math.max(120 + (messages.length*3), 200)
+                };
+            }
+
+            function animateCount(el, to){
+                var start = 0;
+                var step = Math.ceil(to/30) || 1;
+                var id = setInterval(function(){
+                    start += step;
+                    if(start >= to){ el.textContent = to; clearInterval(id); } else { el.textContent = start; }
+                }, 20);
+            }
+
+            function refreshStats(){
+                var nums = getDemoNumbers();
+                animateCount(usersCount, nums.users);
+                animateCount(subsCount, nums.subs);
+                animateCount(msgCount, nums.msgs);
+                animateCount(visitsCount, nums.visits);
+
+                // recent activity
+                var messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                var list = messages.slice(-6).reverse();
+                if(list.length === 0){
+                    recentList.innerHTML = '<li style="color:#bfa0c8;">No recent activity</li>';
+                } else {
+                    recentList.innerHTML = '';
+                    list.forEach(function(m){
+                        var li = document.createElement('li');
+                        li.innerHTML = '<strong style="color:#fff;">'+(m.name||'Anon')+'</strong> <span style="color:#bfa0c8">('+ (m.email||'') +')</span><div style="color:#bfa0c8; font-size:13px; margin-top:6px;">'+ (m.subject || 'Message') + ' — ' + (new Date(m.time||Date.now())).toLocaleString() +'</div>';
+                        recentList.appendChild(li);
+                    });
+                }
+            }
+
+            refreshStats();
+
+            // logout
+            logoutBtn.addEventListener('click', function(){
+                localStorage.removeItem('loggedIn');
+                window.location.href = 'login.html';
+            });
+
+            // quick actions
+            document.getElementById('clearData').addEventListener('click', function(){
+                localStorage.removeItem('contactMessages');
+                localStorage.removeItem('subscribers');
+                localStorage.removeItem('subscribedEmail');
+                localStorage.removeItem('userList');
+                refreshStats();
+                alert('Demo data cleared.');
+            });
+            document.getElementById('simulateMsg').addEventListener('click', function(){
+                var messages = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+                messages.push({ name: 'Demo User', email: 'demo@example.com', subject: 'Hello from dashboard', time: Date.now() });
+                localStorage.setItem('contactMessages', JSON.stringify(messages));
+                refreshStats();
+            });
+            document.getElementById('simulateSub').addEventListener('click', function(){
+                try {
+                    var s = JSON.parse(localStorage.getItem('subscribers') || '[]');
+                    s.push({ email: 'sub'+Date.now()+'@example.com', time: Date.now() });
+                    localStorage.setItem('subscribers', JSON.stringify(s));
+                } catch(e){}
+                refreshStats();
+            });
+
+            // small visual tweak: remove preloader if present
+            var pre = document.getElementById('preloder');
+            if(pre) pre.style.display = 'none';
+        })();
+    </script>
+</body>
+</html>

@@ -66,6 +66,7 @@
 						<li><a href="review.html">Reviews</a></li>
 						<li><a href="blog.html">News</a></li>
 						<li><a href="contact.html">Contact</a></li>
+						<li><a href="dashbord.html">Dashboard</a></li>
 					</ul>
 				</nav>
 			</div>
@@ -226,14 +227,18 @@
 
 	<!-- Newsletter section -->
 	<section class="newsletter-section">
-		<div class="container">
-			<h2>Subscribe to our newsletter</h2>
-			<form class="newsletter-form">
-				<input type="text" placeholder="ENTER YOUR E-MAIL">
-				<button class="site-btn">subscribe  <img src="img/icons/double-arrow.png" alt="#"/></button>
-			</form>
-		</div>
-	</section>
+        <div class="container">
+            <h2>Subscribe to our newsletter</h2>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" id="newsletterEmail" placeholder="ENTER YOUR E-MAIL" required>
+                <button class="site-btn" type="submit">subscribe <img src="img/icons/double-arrow.png" alt="#"/></button>
+            </form>
+
+            <div id="newsletterSuccess" style="display:none; color:#27ff7e; background:#18122e; border-radius:5px; padding:10px 0; margin-top:12px; font-weight:bold; text-align:center; animation: fadeIn 0.6s;">
+                Subscribed successfully!
+            </div>
+        </div>
+    </section>
 	<!-- Newsletter section end -->
 
 
@@ -277,6 +282,41 @@
 	<script src="js/jquery.sticky-sidebar.min.js"></script>
 	<script src="js/jquery.magnific-popup.min.js"></script>
 	<script src="js/main.js"></script>
+	
+<script>
+        // Newsletter subscribe handler (shows success/error message)
+        (function(){
+            var form = document.getElementById('newsletterForm');
+            if(!form) return;
+            var emailInput = document.getElementById('newsletterEmail');
+            var msg = document.getElementById('newsletterSuccess');
+
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+                var email = (emailInput.value || '').trim();
+                var emailValid = /^[\w.+-]+@[\w.-]+\.\w{2,}$/.test(email);
+
+                if(!emailValid){
+                    msg.style.display = 'block';
+                    msg.style.color = '#ff4d6d';
+                    msg.innerText = 'Please enter a valid email address.';
+                    setTimeout(function(){ msg.style.display = 'none'; }, 3000);
+                    return;
+                }
+
+// Simulate subscribe (store flag in localStorage for demo)
+                try { localStorage.setItem('subscribedEmail', email); } catch(e){}
+
+                msg.style.display = 'block';
+                msg.style.color = '#27ff7e';
+                msg.innerText = 'Subscribed successfully!';
+                setTimeout(function(){
+                    msg.style.display = 'none';
+                    form.reset();
+                }, 2000);
+            });
+        })();
+    </script>
 
 	</body>
 </html>

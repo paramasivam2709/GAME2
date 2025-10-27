@@ -74,9 +74,14 @@
             75% { transform: translateX(-5px);}
             100% { transform: translateX(0);}
         }
+        @keyframes fadeIn {
+            from {opacity:0}
+            to {opacity:1}
+        }
     </style>
 </head>
 <body>
+    
     <div class="auth-container">
         <h2>Login</h2>
         <form id="loginForm" autocomplete="off">
@@ -85,8 +90,30 @@
             <input type="password" id="loginPassword" placeholder="Password" required>
             <button type="submit" class="site-btn">Login</button>
         </form>
+
+        <!-- Forgot password link -->
+        <a href="#" id="forgotLink" class="switch-link" style="margin-top:8px; display:block;">Forgot password?</a>
+
         <a href="register.html" class="switch-link">Don't have an account? Register</a>
     </div>
+
+    <!-- Forgot password modal -->
+    <div id="forgotModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; animation:fadeIn 0.2s;">
+        <div style="background:rgba(24,18,46,0.98); padding:22px; border-radius:12px; width:360px; color:#fff; box-shadow:0 8px 40px rgba(0,0,0,0.6);">
+            <h3 style="margin:0 0 12px; text-align:center;">Reset Password</h3>
+            <div id="forgotError" style="display:none; color:#ff4d6d; background:#fff0f3; padding:8px; border-radius:6px; text-align:center; margin-bottom:10px;"></div>
+            <div id="forgotSuccess" style="display:none; color:#27ff7e; background:#081212; padding:8px; border-radius:6px; text-align:center; margin-bottom:10px;"></div>
+            <form id="forgotForm" autocomplete="off">
+                <input type="email" id="forgotEmail" placeholder="Enter your email" style="width:100%; padding:12px; margin-bottom:10px; border:none; border-radius:6px; background:#3e0f3d; color:#fff;">
+                <div style="display:flex; gap:8px;">
+                    <button type="submit" class="site-btn" style="flex:1;">Send reset link</button>
+                    <button type="button" id="forgotClose" class="site-btn" style="flex:0 0 90px; background:#333;">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="js/auth.js"></script>
-</body>
+    
+
 </html>
