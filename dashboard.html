@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In / Sign Up</title>
+  <style>
+    :root {
+      --accent: #ffb320;
+      --bg: #0f1720;
+      --text: #eef2f6;
+      --muted: #98a0aa;
+      --success: #4caf50;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #07111a 0%, #0f2733 100%);
+      color: var(--text);
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      width: 360px;
+      text-align: center;
+      position: relative;
+    }
+
+    h2 {
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: var(--accent);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      color: #0f1720;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ffca55;
+    }
+
+    .toggle, .forgot {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .toggle a, .forgot a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toggle a:hover, .forgot a:hover {
+      text-decoration: underline;
+    }
+
+    .success-box {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--success);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      opacity: 0;
+      transition: 0.4s ease;
+    }
+
+    .show {
+      opacity: 1;
+      top: -80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="authBox">
+    <div id="successBox" class="success-box"></div>
+
+    <h2 id="formTitle">Sign In</h2>
+    <form id="authForm">
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required />
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+      </div>
+      <button type="submit" class="btn">Sign In</button>
+      <p class="forgot"><a href="#" id="forgotLink">Forgot Password?</a></p>
+    </form>
+    <p class="toggle">
+      Don't have an account? <a href="#" id="toggleLink">Sign Up</a>
+    </p>
+  </div>
+
+  <script>
+    const formTitle = document.getElementById('formTitle');
+    const authForm = document.getElementById('authForm');
+    const toggleLink = document.getElementById('toggleLink');
+    const forgotLink = document.getElementById('forgotLink');
+    const successBox = document.getElementById('successBox');
+
+    let isSignIn = true;
+    let isForgot = false;
+
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      isSignIn = !isSignIn;
+      isForgot = false;
+      updateForm();
+    });
+
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      isForgot = true;
+      updateForm();
+    });
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (isForgot) {
+        showMessage('Password reset link sent!');
+      } else if (isSignIn) {
+        showMessage('Login successful!');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      } else {
+        showMessage('Signup successful! Auto logging in...');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      }
+    });
+
+    function showMessage(msg) {
+      successBox.textContent = msg;
+      successBox.classList.add('show');
+      setTimeout(() => {
+        successBox.classList.remove('show');
+      }, 2500);
+    }
+
+    function updateForm() {
+      if (isForgot) {
+        formTitle.textContent = 'Reset Password';
+        authForm.innerHTML = `
+          <div class="input-group">
+            <label for="email">Enter your email</label>
+            <input type="email" id="email" required />
+          </div>
+          <button type="submit" class="btn">Send Reset Link</button>
+        `;
+        document.querySelector('.toggle').innerHTML = 'Remembered your password? <a href="#" id="toggleBack">Sign In</a>';
+        document.getElementById('toggleBack').addEventListener('click', (e) => {
+          e.preventDefault();
+          isForgot = false;
+          isSignIn = true;
+          updateForm();
+        });
+      } else if (isSignIn) {
+        formTitle.textContent = 'Sign In';
+        authForm.innerHTML = `
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+          <button type="submit" class="btn">Sign In</button>
+          <p class="forgot"><a href="#" id="forgotLink">Forgot Password?</a></p>
+        `;
+        document.getElementById('forgotLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          isForgot = true;
+          updateForm();
+        });
+        document.querySelector('.toggle').innerHTML = "Don't have an account? <a href='#' id='toggleLink'>Sign Up</a>";
+        document.getElementById('toggleLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          isSignIn = false;
+          updateForm();
+        });
+      } else {
+        formTitle.textContent = 'Sign Up';
+        authForm.innerHTML = `
+          <div class="input-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" required />
+          </div>
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+        `;
+        document.querySelector('.toggle').innerHTML = 'Already have an account? <a href="#" id="toggleLink">Sign In</a>';
+        document.getElementById('toggleLink').addEventListener('click', (e) => {
+          e.preventDefault();
+          isSignIn = true;
+          updateForm();
+        });
+      }
+    }
+  </script>
+</body>
+</html>
